@@ -30,6 +30,7 @@
     </nav>
     <!-- loading -->
     <div class="loading" v-if="taskStore.loading">Loading tasks...</div>
+    <div class="error" v-if="taskStore.error">{{ taskStore.error }}</div>
     <!-- task list (all) -->
     <div class="task-list" v-if="filter === 'all'">
       <div v-for="task in taskStore.tasks">
