@@ -59,3 +59,33 @@ header h1 {
   cursor: pointer;
   color: #bbb;
 }
+
+/* filter nav */
+.filter {
+  width: 640px;
+  margin: 20px auto 10px auto;
+  text-align: right;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.filter p {
+  margin: 0;
+}
+.filter span {
+  font-weight: 600;
+}
+.filter button {
+  display: inline-block;
+  margin-left: 10px;
+  background: #fff;
+  border: 2px solid #555;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+.filter button.active {
+  color: #fff;
+  background: #555;
+}
