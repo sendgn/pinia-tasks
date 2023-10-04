@@ -28,6 +28,8 @@
         >Fav tasks</button>
       </div>
     </nav>
+    <!-- loading -->
+    <div class="loading" v-if="taskStore.loading">Loading tasks...</div>
     <!-- task list (all) -->
     <div class="task-list" v-if="filter === 'all'">
       <div v-for="task in taskStore.tasks">
@@ -53,9 +55,9 @@
     components: { TaskDetails, TaskForm },
     setup() {
       const taskStore = useTaskStore();
-
+      // fetch tasks
+      taskStore.getTasks();
       const filter = ref('all');
-
       return { taskStore, filter };
     }
   };
