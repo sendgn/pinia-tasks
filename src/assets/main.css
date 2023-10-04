@@ -134,3 +134,14 @@ form input:focus {
   text-align: center;
   margin: 30px auto;
 }
+
+/* error */
+.error {
+  max-width: 640px;
+  border: 1px solid #ff629b;
+  background: #ff7bac;
+  color: #fff;
+  padding: 5px 0;
+  text-align: center;
+  margin: 30px auto;
+}

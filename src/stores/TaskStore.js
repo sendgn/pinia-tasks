@@ -3,7 +3,8 @@ import { defineStore } from 'pinia';
 export const useTaskStore = defineStore('taskStore', {
   state: () => ({
     tasks: [],
-    loading: false
+    loading: false,
+    error: null
   }),
   getters: {
     favs() {
@@ -21,22 +22,64 @@ export const useTaskStore = defineStore('taskStore', {
       this.loading = true;
       try {
         const resp = await fetch('http://localhost:3000/tasks');
+        if (!resp.ok) {
+          throw new Error('Could not get tasks');
+        }
         const data = await resp.json();
         this.tasks = data;
-        this.loading = false;
       } catch (err) {
+        this.error = err.message;
         console.log(err);
       }      
+      this.loading = false;
     },
-    addTask(task) {
-      this.tasks.push(task);
+    async addTask(task) {
+      try {
+        const resp = await fetch('http://localhost:3000/tasks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(task) 
+        });
+        if (!resp.ok) {
+          throw new Error('Could not add the task');
+        }
+        this.tasks.push(task);
+      } catch (err) {
+        this.error = err.message;
+        console.log(err);
+      }
     },
-    deleteTask(id) {
-      this.tasks = this.tasks.filter((t) => t.id !== id);
+    async deleteTask(id) {
+      try {
+        const resp = await fetch(`http://localhost:3000/tasks/${id}`, {
+          method: 'DELETE'
+        });
+        if (!resp.ok) {
+          throw new Error('Could not delete the task');
+        }
+        this.tasks = this.tasks.filter((t) => t.id !== id);
+      } catch (err) {
+        this.error = err.message;
+        console.log(err);
+      }
     },
-    toggleFav(id) {
+    async toggleFav(id) {
       const task = this.tasks.find((t) => t.id === id);
-      task.isFav = !task.isFav;
+
+      try {
+        const resp = await fetch(`http://localhost:3000/tasks/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isFav: !task.isFav })
+        });
+        if (!resp.ok) {
+          throw new Error('Error toggling favorite');
+        }
+        task.isFav = !task.isFav;
+      } catch (err) {
+        this.error = err.message;
+        console.log(err);
+      }
     }
   }
 })
