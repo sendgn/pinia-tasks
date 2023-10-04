@@ -5,10 +5,14 @@
       <img src="./assets/pinia-logo.svg" alt="pinia logo">
       <h1>Pinia Tasks</h1>
     </header>
+    <!-- new task form -->
+    <div class="new-task-form">
+      <TaskForm />
+    </div>
     <!-- filter -->
     <nav class="filter">
       <p>
-        Count:
+        Total:
         <span>
           {{ filter === 'all' ? taskStore.totalCount : taskStore.favCount }}
         </span>
@@ -24,12 +28,13 @@
         >Fav tasks</button>
       </div>
     </nav>
-    <!-- task list -->
+    <!-- task list (all) -->
     <div class="task-list" v-if="filter === 'all'">
       <div v-for="task in taskStore.tasks">
         <TaskDetails :task="task" />
       </div>
     </div>
+    <!-- task list (favorites) -->
     <div class="task-list" v-if="filter === 'favs'">
       <div v-for="task in taskStore.favs">
         <TaskDetails :task="task" />
@@ -39,18 +44,19 @@
 </template>
 
 <script>
-  import { ref } from 'vue'
-  import TaskDetails from './components/TaskDetails.vue'
-  import { useTaskStore } from './stores/TaskStore'
+  import { ref } from 'vue';
+  import { useTaskStore } from './stores/TaskStore';
+  import TaskDetails from './components/TaskDetails.vue';
+  import TaskForm from './components/TaskForm.vue';
 
   export default {
-    components: { TaskDetails },
+    components: { TaskDetails, TaskForm },
     setup() {
-      const taskStore = useTaskStore()
+      const taskStore = useTaskStore();
 
-      const filter = ref('all')
+      const filter = ref('all');
 
-      return { taskStore, filter }
+      return { taskStore, filter };
     }
-  }
+  };
 </script>
